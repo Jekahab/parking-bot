@@ -1,8 +1,11 @@
 name: Auto Booking
 
 on:
+  push:
+    branches:
+      - main
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 22 * * *'  # Каждый день в 00:00 по Madrid (22:00 UTC)
   workflow_dispatch:
 
 jobs:
