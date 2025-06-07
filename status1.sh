@@ -5,11 +5,11 @@ export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 TZ="Europe/Madrid"
 
 # Определение следующей полуночи
-midnight_epoch=$(gdate -d "tomorrow 00:00:00" +%s)
+midnight_epoch=$(date -d "tomorrow 00:00:00" +%s)
 
 # Дата начала бронирования — через 6 дней от полуночи
-booking_date=$(gdate -d "@$((midnight_epoch + 5 * 86400))" +"%Y-%m-%d")
-booking_date_end=$(gdate -d "@$((midnight_epoch + 6 * 86400))" +"%Y-%m-%d")
+booking_date=$(date -d "@$((midnight_epoch + 5 * 86400))" +"%Y-%m-%d")
+booking_date_end=$(date -d "@$((midnight_epoch + 6 * 86400))" +"%Y-%m-%d")
 
 # Параметры брони (часовой пояс — Europe/Madrid, летом +02:00)
 start_date_utc="${booking_date}T22:00:00+02:00"
@@ -21,7 +21,7 @@ seat2=845096
 
 # Текущий timestamp с миллисекундами
 timestamp() {
-  gdate +"%Y-%m-%d %H:%M:%S.%3N %Z"
+  date +"%Y-%m-%d %H:%M:%S.%3N %Z"
 }
 
 # Функция бронирования
@@ -70,17 +70,17 @@ echo "$(timestamp) | 📅 Дата окончания бронирования: 
 echo "$(timestamp) | 🚀 Запуск скрипта бронирования..."
 
 # Запускаем цикл бронирования без ожидания
-end_time=$(( $(gdate +%s) + 10 ))
+end_time=$(( $(date +%s) + 10 ))
 
-while [ $(gdate +%s) -lt $end_time ]; do
-  loop_end=$(( $(gdate +%s) + 5 ))
-  while [ $(gdate +%s) -lt $loop_end ]; do
+while [ $(date +%s) -lt $end_time ]; do
+  loop_end=$(( $(date +%s) + 5 ))
+  while [ $(date +%s) -lt $loop_end ]; do
     try_reserve $seat1 && break
     sleep 0.1
   done
 
-  loop_end=$(( $(gdate +%s) + 5 ))
-  while [ $(gdate +%s) -lt $loop_end ]; do
+  loop_end=$(( $(date +%s) + 5 ))
+  while [ $(date +%s) -lt $loop_end ]; do
     try_reserve $seat2 && break
     sleep 0.1
   done
