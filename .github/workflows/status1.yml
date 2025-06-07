@@ -3,7 +3,7 @@ name: Auto Booking
 on:
   schedule:
     - cron: '0 22 * * *'  # Каждый день в 00:00 по Madrid (22:00 UTC)
-  workflow_dispatch:      # Позволяет вручную запускать
+  workflow_dispatch:
 
 jobs:
   run-script:
@@ -21,3 +21,4 @@ jobs:
         run: |
           chmod +x status1.sh
           ./status1.sh
+
