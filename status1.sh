@@ -8,8 +8,8 @@ TZ="Europe/Madrid"
 midnight_epoch=$(gdate -d "tomorrow 00:00:00" +%s)
 
 # Дата начала бронирования — через 6 дней от полуночи
-booking_date=$(gdate -d "@$((midnight_epoch + 5 * 86400))" +"%Y-%m-%d")      # начало: 22:00
-booking_date_end=$(gdate -d "@$((midnight_epoch + 6 * 86400))" +"%Y-%m-%d")  # конец: 17:00
+booking_date=$(gdate -d "@$((midnight_epoch + 5 * 86400))" +"%Y-%m-%d")
+booking_date_end=$(gdate -d "@$((midnight_epoch + 6 * 86400))" +"%Y-%m-%d")
 
 # Параметры брони (часовой пояс — Europe/Madrid, летом +02:00)
 start_date_utc="${booking_date}T22:00:00+02:00"
@@ -65,47 +65,11 @@ try_reserve() {
   fi
 }
 
-# Ожидание до начала следующей минуты
-#current_epoch=$(gdate +%s)
-#next_minute_epoch=$(( (current_epoch / 60 + 1) * 60 ))
-#next_minute_human=$(gdate -d "@$next_minute_epoch" +"%Y-%m-%d %H:%M:%S %Z")
-#sleep_s=$(( next_minute_epoch - current_epoch ))
-
-#echo "$(timestamp) | 📅 Дата начала бронирования: ${booking_date} в 22:00"
-#echo "$(timestamp) | 📅 Дата окончания бронирования: ${booking_date_end} в 17:00"
-#echo "$(timestamp) | 🕛 Время запуска скрипта бронирования: $next_minute_human"
-#echo "$(timestamp) | ⏳ Ожидание до запуска $sleep_s секунд"
-
-#sleep $sleep_s
-
-#echo "$(timestamp) | 🚀 Запуск скрипта бронирования..."
-
-
-# Рассчитываем задержку до 00:00:00.100
-target_epoch_ms=$(( midnight_epoch * 1000 + 100 ))
-current_epoch_ms=$(gdate +%s%3N)
-sleep_ms=$(( target_epoch_ms - current_epoch_ms ))
-
-sleep_s=$(( sleep_ms / 1000 ))
-sleep_rem_ms=$(( sleep_ms % 1000 ))
-target_time=$(gdate -d "@$midnight_epoch" +"%Y-%m-%d 00:00:00.100 %Z")
-
-echo "$(timestamp) | 📅 Дата начала бронирования: $(gdate -d "${booking_date} +1 day" +"%Y-%m-%d") в 22:00"
-echo "$(timestamp) | 📅 Дата окончания бронирования: $(gdate -d "${booking_date_end} +1 day" +"%Y-%m-%d") в 17:00"
-
-#echo "$(timestamp) | 📅 Дата начала бронирования: ${booking_date} в 22:00"
-#echo "$(timestamp) | 📅 Дата окончания бронирования: ${booking_date_end} в 17:00"
-echo "$(timestamp) | 🕛 Время запуска скрипта: ${target_time}"
-echo "$(timestamp) | ⏳ Ожидание до запуска: ${sleep_s} сек и ${sleep_rem_ms} мс"
-
-sleep "${sleep_s}"
-sleep "$(printf ".%03d" "${sleep_rem_ms}")"
-
+echo "$(timestamp) | 📅 Дата начала бронирования: ${booking_date} в 22:00"
+echo "$(timestamp) | 📅 Дата окончания бронирования: ${booking_date_end} в 17:00"
 echo "$(timestamp) | 🚀 Запуск скрипта бронирования..."
 
-
-
-# Цикл 10 секунд: 5 сек для seat1, 5 сек для seat2
+# Запускаем цикл бронирования без ожидания
 end_time=$(( $(gdate +%s) + 10 ))
 
 while [ $(gdate +%s) -lt $end_time ]; do
