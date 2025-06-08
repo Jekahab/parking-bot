@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '* * * * *'  # Каждый день в 00:00 по Madrid (22:00 UTC)
+    - cron: '47 10 * * *'  # Каждый день в 00:00 по Madrid (22:00 UTC)
   workflow_dispatch:
 
 jobs:
